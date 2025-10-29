@@ -1,8 +1,14 @@
-import { toggleTheme } from "@/Slice/themeSlice";
 import React from "react";
+
+// Icons
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import { VscJson } from "react-icons/vsc";
+
+// React redux and toolkit
 import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "@/Slice/themeSlice";
+
+// components
 import PrimaryButton from "./PrimaryButton";
 
 const Header = ({ onExport }) => {
@@ -42,7 +48,7 @@ const Header = ({ onExport }) => {
         <PrimaryButton
           styles="border px-2 py-1 rounded-md cursor-pointer"
           btnName={"Export PNG"}
-          handleClick={onExport}
+          handleClick={() => onExport && onExport()}
         />
       </div>
     </header>

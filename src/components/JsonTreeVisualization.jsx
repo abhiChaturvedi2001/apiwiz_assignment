@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 import {
   ReactFlow,
   Background,
@@ -8,13 +10,14 @@ import {
   Panel,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useEffect, useRef } from "react";
+import { NodeSearch } from "./node-search";
+import { toPng } from "html-to-image";
+
+// Components
 import ObjectNode from "./Nodes/ObjectNode";
 import ArrayNode from "./Nodes/ArrayNode";
 import PrimitiveNode from "./Nodes/PrimitiveNode";
 import TreeControls from "./TreeControls";
-import { NodeSearch } from "./node-search";
-import { toPng } from "html-to-image";
 
 const nodeTypes = {
   object: ObjectNode,
@@ -41,12 +44,10 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges, onExport }) => {
       }))
     );
 
-    // Fit view with animation after nodes are set
     setTimeout(() => {
       fitView({ padding: 0.2, duration: 800 });
     }, 50);
 
-    // Auto-center on highlighted node
     const highlightedNode = initialNodes.find((n) => n.data.isHighlighted);
     if (highlightedNode) {
       setTimeout(() => {
@@ -76,7 +77,6 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges, onExport }) => {
     }
   };
 
-  // pass the export function up to parent (Header button)
   useEffect(() => {
     if (onExport) {
       onExport(handleExport);

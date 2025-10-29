@@ -1,9 +1,13 @@
 import { useState } from "react";
+
+// Icons and Toaster
 import { FaCode } from "react-icons/fa";
 import { CiTrash } from "react-icons/ci";
+import toast from "react-hot-toast";
+
+// Components
 import TextArea from "./TextArea";
 import PrimaryButton from "./PrimaryButton";
-import toast from "react-hot-toast";
 
 const JsonInput = ({ onVisualize, onClear }) => {
   const [jsonInput, setJsonInput] = useState(
@@ -46,8 +50,8 @@ const JsonInput = ({ onVisualize, onClear }) => {
             onClick={handleClear}
             className="flex items-center gap-1.5 px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded transition-colors"
           >
-            <CiTrash size={25} className="cursor-pointer " />
-            <span>Clear</span>
+            <CiTrash size={25} className="cursor-pointer dark:text-white" />
+            <span className="dark:text-white">Clear</span>
           </button>
         </div>
       </div>

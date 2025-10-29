@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+// React Flow Module Methods
 import { ReactFlowProvider } from "@xyflow/react";
-import { VscJson } from "react-icons/vsc";
+
+// Utils Methods
+import { generateTree } from "./utils/jsonTotree";
+
+// components Import
 import Header from "./components/Header";
 import JsonInput from "./components/JsonInput";
 import JsonTreeVisualization from "./components/JsonTreeVisualization";
-import { generateTree } from "./utils/jsonTotree";
-import { useSelector } from "react-redux";
+import Loading from "./components/Loading";
 
 const App = () => {
   const [nodes, setNodes] = useState([]);
@@ -47,12 +53,7 @@ const App = () => {
               />
             </ReactFlowProvider>
           ) : (
-            <div className="h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-              <div className="text-center">
-                <VscJson className="w-16 h-16 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">Enter JSON and click "Visualize Tree"</p>
-              </div>
-            </div>
+            <Loading />
           )}
         </div>
       </div>
