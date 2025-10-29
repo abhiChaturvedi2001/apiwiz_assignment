@@ -3,13 +3,14 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { Toaster } from "react-hot-toast";
-import { ThemeProvider } from "./components/theme-provider";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="theme-preference">
+    <Provider store={store}>
       <App />
       <Toaster />
-    </ThemeProvider>
+    </Provider>
   </StrictMode>
 );

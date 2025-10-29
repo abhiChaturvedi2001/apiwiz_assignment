@@ -17,7 +17,7 @@ const TextArea = ({
       {label && (
         <label
           htmlFor={name}
-          className="text-sm font-medium text-gray-700 mb-2"
+          className="text-sm font-medium text-gray-700 mb-2 dark:text-white "
         >
           {label} {required && <span className="text-red-500">*</span>}
         </label>
@@ -33,7 +33,9 @@ const TextArea = ({
         maxLength={maxLength}
         disabled={disabled}
         className={`w-full h-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none font-mono text-sm ${
-          disabled ? "bg-gray-100 cursor-not-allowed" : "bg-gray-50"
+          disabled
+            ? "bg-gray-100 cursor-not-allowed dark:text-white dark:bg-gray-900"
+            : "bg-gray-50 dark:text-white dark:bg-gray-900"
         }`}
       />
     </div>

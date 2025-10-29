@@ -1,7 +1,6 @@
 import {
   ReactFlow,
   Background,
-  Controls,
   useNodesState,
   useEdgesState,
   useReactFlow,
@@ -9,12 +8,13 @@ import {
   Panel,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import ObjectNode from "./Nodes/ObjectNode";
 import ArrayNode from "./Nodes/ArrayNode";
 import PrimitiveNode from "./Nodes/PrimitiveNode";
 import TreeControls from "./TreeControls";
 import { NodeSearch } from "./node-search";
+import { toPng } from "html-to-image";
 
 const nodeTypes = {
   object: ObjectNode,
@@ -22,7 +22,8 @@ const nodeTypes = {
   primitive: PrimitiveNode,
 };
 
-const JsonTreeVisualization = ({ initialNodes, initialEdges }) => {
+const JsonTreeVisualization = ({ initialNodes, initialEdges, onExport }) => {
+  const ref = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { fitView } = useReactFlow();
@@ -58,6 +59,30 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges }) => {
     }
   }, [initialNodes, initialEdges, setNodes, setEdges, fitView]);
 
+  const handleExport = async () => {
+    if (!ref.current) return;
+    try {
+      const dataUrl = await toPng(ref.current, {
+        backgroundColor: "white",
+        pixelRatio: 2,
+      });
+
+      const link = document.createElement("a");
+      link.download = "json-tree.png";
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Error exporting image:", err);
+    }
+  };
+
+  // pass the export function up to parent (Header button)
+  useEffect(() => {
+    if (onExport) {
+      onExport(handleExport);
+    }
+  }, [onExport]);
+
   return (
     <div className="relative w-full h-full">
       <ReactFlow
@@ -81,7 +106,6 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges }) => {
           size={1}
           color="#d1d5db"
         />
-        <Controls />
         <TreeControls />
       </ReactFlow>
       <Panel
