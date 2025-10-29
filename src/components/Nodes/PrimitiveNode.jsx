@@ -1,4 +1,5 @@
 import { Handle, Position } from "@xyflow/react";
+import toast from "react-hot-toast";
 import { BsCopy, BsHash } from "react-icons/bs";
 
 const PrimitiveNode = ({ data }) => {

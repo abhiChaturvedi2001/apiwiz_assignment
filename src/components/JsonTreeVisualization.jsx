@@ -2,20 +2,19 @@ import {
   ReactFlow,
   Background,
   Controls,
-  MiniMap,
   useNodesState,
   useEdgesState,
-  addEdge,
-  Position,
   useReactFlow,
   BackgroundVariant,
+  Panel,
 } from "@xyflow/react";
-
 import "@xyflow/react/dist/style.css";
 import { useEffect } from "react";
 import ObjectNode from "./Nodes/ObjectNode";
 import ArrayNode from "./Nodes/ArrayNode";
 import PrimitiveNode from "./Nodes/PrimitiveNode";
+import TreeControls from "./TreeControls";
+import { NodeSearch } from "./node-search";
 
 const nodeTypes = {
   object: ObjectNode,
@@ -35,7 +34,7 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges }) => {
         ...edge,
         animated: true,
         style: {
-          stroke: "#333",
+          stroke: "#9ca3af",
           strokeWidth: 2,
         },
       }))
@@ -60,44 +59,38 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges }) => {
   }, [initialNodes, initialEdges, setNodes, setEdges, fitView]);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      nodeTypes={nodeTypes}
-      fitView
-      className="bg-gradient-background"
-      minZoom={0.1}
-      maxZoom={2}
-      defaultEdgeOptions={{
-        type: "smoothstep",
-        animated: true,
-      }}
-    >
-      <Background
-        className="bg-background"
-        variant={BackgroundVariant.Dots}
-        gap={16}
-        size={1}
-      />
-      {/* <MiniMap
-        nodeColor={(node) => {
-          switch (node.type) {
-            case "object":
-              return "hsl(var(--node-object))";
-            case "array":
-              return "hsl(var(--node-array))";
-            case "primitive":
-              return "hsl(var(--node-primitive))";
-            default:
-              return "hsl(var(--muted))";
-          }
+    <div className="relative w-full h-full">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        fitView
+        className="bg-gray-50"
+        minZoom={0.1}
+        maxZoom={2}
+        defaultEdgeOptions={{
+          type: "smoothstep",
+          animated: true,
         }}
-        className="!bg-card !border-2 !border-border rounded-lg shadow-lg"
-        maskColor="hsl(var(--background) / 0.8)"
-      /> */}
-    </ReactFlow>
+      >
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={16}
+          size={1}
+          color="#d1d5db"
+        />
+        <Controls />
+        <TreeControls />
+      </ReactFlow>
+      <Panel
+        className="flex gap-1 rounded-md bg-primary-foreground p-1 text-foreground"
+        position="top-left"
+      >
+        <NodeSearch />
+      </Panel>
+    </div>
   );
 };
 

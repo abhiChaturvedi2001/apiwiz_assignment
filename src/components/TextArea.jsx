@@ -5,7 +5,7 @@ const TextArea = ({
   name,
   value,
   onChange,
-  placeholder = "Paste Your JSON...",
+  placeholder = "Paste your JSON here...",
   rows = 4,
   maxLength,
   className = "",
@@ -13,9 +13,12 @@ const TextArea = ({
   disabled = false,
 }) => {
   return (
-    <div className={`flex flex-col space-y-2 ${className}`}>
+    <div className={`flex flex-col ${className}`}>
       {label && (
-        <label htmlFor={name} className="text-sm font-medium text-gray-700">
+        <label
+          htmlFor={name}
+          className="text-sm font-medium text-gray-700 mb-2"
+        >
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
@@ -29,8 +32,8 @@ const TextArea = ({
         rows={rows}
         maxLength={maxLength}
         disabled={disabled}
-        className={`w-full p-3 border h-[70vh] border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none ${
-          disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"
+        className={`w-full h-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none font-mono text-sm ${
+          disabled ? "bg-gray-100 cursor-not-allowed" : "bg-gray-50"
         }`}
       />
     </div>
