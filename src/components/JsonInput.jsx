@@ -8,12 +8,16 @@ import toast from "react-hot-toast";
 // Components
 import TextArea from "./TextArea";
 import PrimaryButton from "./PrimaryButton";
+import { useDispatch } from "react-redux";
+import { setJsonInputValue } from "@/Slice/jsonInputSlice";
 
 const JsonInput = ({ onVisualize, onClear }) => {
+  const dispatch = useDispatch();
   const [jsonInput, setJsonInput] = useState(
     JSON.stringify({ sample: "data" }, null, 2)
   );
   const [error, setError] = useState(null);
+  dispatch(setJsonInputValue(jsonInput));
 
   const handleVisualize = () => {
     try {

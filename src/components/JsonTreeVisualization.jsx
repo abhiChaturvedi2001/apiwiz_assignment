@@ -8,6 +8,8 @@ import {
   useReactFlow,
   BackgroundVariant,
   Panel,
+  getNodesBounds,
+  getViewportForBounds,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { NodeSearch } from "./node-search";
@@ -18,6 +20,7 @@ import ObjectNode from "./Nodes/ObjectNode";
 import ArrayNode from "./Nodes/ArrayNode";
 import PrimitiveNode from "./Nodes/PrimitiveNode";
 import TreeControls from "./TreeControls";
+import { downloadImage } from "@/utils/jsonTotree";
 
 const nodeTypes = {
   object: ObjectNode,
@@ -29,7 +32,7 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges, onExport }) => {
   const ref = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const { fitView } = useReactFlow();
+  const { fitView, getNodes } = useReactFlow();
 
   useEffect(() => {
     setNodes(initialNodes);
@@ -60,28 +63,23 @@ const JsonTreeVisualization = ({ initialNodes, initialEdges, onExport }) => {
     }
   }, [initialNodes, initialEdges, setNodes, setEdges, fitView]);
 
-  const handleExport = async () => {
-    if (!ref.current) return;
-    try {
-      const dataUrl = await toPng(ref.current, {
-        backgroundColor: "white",
-        pixelRatio: 2,
-      });
+  const handleExport = () => {
+    const nodesBounds = getNodesBounds(getNodes());
+    const viewport = document.querySelector(".react-flow__viewport");
 
-      const link = document.createElement("a");
-      link.download = "json-tree.png";
-      link.href = dataUrl;
-      link.click();
-    } catch (err) {
-      console.error("Error exporting image:", err);
-    }
+    toPng(viewport, {
+      backgroundColor: "#fff",
+      width: nodesBounds.width,
+      height: nodesBounds.height,
+      pixelRatio: 2,
+    }).then(downloadImage);
   };
 
   useEffect(() => {
     if (onExport) {
-      onExport(handleExport);
+      onExport({ fn: handleExport });
     }
-  }, [onExport]);
+  }, [nodes]);
 
   return (
     <div className="relative w-full h-full">

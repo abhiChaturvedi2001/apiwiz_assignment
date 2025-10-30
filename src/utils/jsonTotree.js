@@ -80,3 +80,11 @@ export const generateTree = (data) => {
     const result = createNode(data, "root", "", 0, 0, 0);
     return { nodes: result.nodes, edges };
 };
+
+
+export const downloadImage = (dataUrl) => {
+    const a = document.createElement('a');
+    a.setAttribute('download', `json-tree-${Date.now()}.png`);
+    a.setAttribute('href', dataUrl);
+    a.click();
+};
