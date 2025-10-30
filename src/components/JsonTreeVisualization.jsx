@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import {
   ReactFlow,
@@ -9,7 +9,6 @@ import {
   BackgroundVariant,
   Panel,
   getNodesBounds,
-  getViewportForBounds,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { NodeSearch } from "./node-search";
@@ -29,7 +28,6 @@ const nodeTypes = {
 };
 
 const JsonTreeVisualization = ({ initialNodes, initialEdges, onExport }) => {
-  const ref = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { fitView, getNodes } = useReactFlow();

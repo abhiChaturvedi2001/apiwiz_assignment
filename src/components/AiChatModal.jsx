@@ -3,11 +3,15 @@ import { generateAISummary } from "@/utils/ai.service";
 import TextArea from "./TextArea";
 import PrimaryButton from "./PrimaryButton";
 import toast from "react-hot-toast";
-import { FaCross } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
+import { useSelector } from "react-redux";
+
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const AiChatModal = ({ isOpen, onClose }) => {
-  const [prompt, setPrompt] = useState("");
+  const myJsonInput = useSelector((store) => store.jsonInputValue.jsonInput);
+  const [prompt, setPrompt] = useState(myJsonInput);
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -54,11 +58,34 @@ const AiChatModal = ({ isOpen, onClose }) => {
             styles="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition"
           />
         </div>
-        {response && (
-          <div className="mt-5 p-4 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200 overflow-auto max-h-60">
-            {response}
-          </div>
-        )}
+        {!response ? <div className="text-center my-10">
+          <h4>Hi i am a JSON GPT ...</h4>
+          <p>I am here to assist you ! Please Ask Anything About JSON </p>
+        </div> : (
+  <div className="mt-5 rounded-lg max-h-60 overflow-y-auto text-sm">
+    <SyntaxHighlighter
+      language="json"
+      style={oneDark}
+      customStyle={{
+        margin: 0,
+        padding: "1rem",
+        backgroundColor: "transparent",
+        whiteSpace: "pre-wrap",
+        wordBreak: "break-word",
+      }}
+    >
+      {typeof response === "string"
+        ? (() => {
+            try {
+              return JSON.stringify(JSON.parse(response), null, 2);
+            } catch {
+              return response;
+            }
+          })()
+        : JSON.stringify(response, null, 2)}
+    </SyntaxHighlighter>
+  </div>
+)}
       </div>
     </div>
   );
